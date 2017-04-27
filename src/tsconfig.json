@@ -1,0 +1,14 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es3",
+        "module": "commonjs",
+        "watch": true,
+        "outDir": "../lib/",
+        "removeComments": true,
+        "alwaysStrict": true
+    },
+    "files": [
+        "index.ts"
+    ]
+}

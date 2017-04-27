@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.sliderr#slider {
+    width: 400px;
+    height: 200px;
+    border: 1px solid red;
+    margin: 50px auto;
+}
+
+.sliderr > div {
+    background: #eeff56;
+}
+
+.sliderr div:nth-child(2) {
+    background: #c56;
+}
+
+/***** M-SLIDER CSS STYLES *****/
+.m-slider__wrapper {
+    width: 100%;
+    height: 100%;
+    display: block;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.m_slider__inner {
+    transform: translate3d(0, 0, 0);
+    transition: transform ease-in-out 300ms;
+}
+
+.m-slider__slide {
+    height: 100%;
+    overflow: hidden;
+    float: left;
+}
