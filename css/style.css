@@ -24,6 +24,7 @@
     width: 100%;
     height: 100%;
     display: block;
+    position: relative;
     flex-direction: row;
     overflow: hidden;
 }
@@ -35,6 +36,18 @@
 
 .m-slider__slide {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     float: left;
+}
+
+.m-slider__button {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin: 0 10px;
+}
+
+.m-slider__button-next {
+    left: unset;
+    right: 0;
 }
