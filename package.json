@@ -1,0 +1,26 @@
+{
+  "name": "m-slider",
+  "version": "0.0.1",
+  "description": "Slider for my learning puproses",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinnov92/Slider.git"
+  },
+  "keywords": [
+    "Slider"
+  ],
+  "author": "Martin Novak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/martinnov92/Slider/issues"
+  },
+  "homepage": "https://github.com/martinnov92/Slider#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-minify": "0.0.15"
+  }
+}
