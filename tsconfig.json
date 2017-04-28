@@ -4,11 +4,11 @@
         "target": "es3",
         "module": "commonjs",
         "watch": true,
-        "outDir": "../lib/",
+        "outDir": "./lib/",
         "removeComments": true,
         "alwaysStrict": true
     },
     "files": [
-        "index.ts"
+        "./src/index.ts"
     ]
 }

@@ -3,6 +3,7 @@
 // [ ] !! zkusit nastavit gulp pro minifikaci
 
 // [x] zjistit všechny potomky zadaného elementu 
+// [ ] propočty velikostí dát do samostatné funkce, která se bude volat např. po resizu
 // [x] zjistit velikost rodičovského elementu a tu nastavit slideru
 // [x] při inicializaci vytvořit nový inner div, který bude mít nastavenou
 //     správnou šířku 
@@ -17,12 +18,19 @@ class Slider {
     dimensionOfParent: ClientRect;
 
     constructor(element: string, settings?: SettingsType) {
+        // get name and element of slider
         this.elementName = element;
         this.elementHTML = $(element);
+        // get dimension of parent element - just in case
+        this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
 
         // init slider
         this.init();
         this.settings(settings);
+    }
+
+    sliderDimension() {
+
     }
 
     init() {
@@ -30,9 +38,6 @@ class Slider {
         const fragment = document.createDocumentFragment();
         const innerDiv = document.createElement('div');
         innerDiv.classList.add('m-slider__inner');
-
-        // get dimension of parent element - just in case
-        this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
 
         // get children and save it to array => NodeList to array
         const nodeList = $$(this.elementName + ' > *');
@@ -67,11 +72,6 @@ class Slider {
     }
 
 }
-
-var a = new Slider("#slider", {
-    buttons: true
-});
-
 
 /*
 **
