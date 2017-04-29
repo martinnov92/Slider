@@ -54,10 +54,17 @@ class Slider {
         this.settings(settings);
     }
 
-    getElements(init?: boolean) {
+    getElements(init?: boolean): void {
         // get children and save it to array => NodeList to array
         // only for the first time - later use method
-        let nodeList = $$(this.elementName + ' > *:not(.m-slider__inner)');
+        let nodeList = [];
+
+        if (init) {
+            nodeList = $$(this.elementName + ' > *:not(.m-slider__inner)');
+        } else {
+            nodeList = $$(this.elementName + ' > div > *');
+        }
+
         let childrenOfDiv = Array.prototype.slice.apply(nodeList);
 
         if (init) {
@@ -78,7 +85,7 @@ class Slider {
         console.log(this.arrayOfChildren[0].element.offsetLeft);
     }
 
-    init() {
+    init(): void {
         let fragment = document.createDocumentFragment();
         // width for new innerDiv = dimension * count of divs
         let totalWidth = this.dimensionOfParent.width * this.arrayOfChildren.length;
@@ -100,7 +107,7 @@ class Slider {
         this.elementHTML.appendChild(fragment);
     }
 
-    settings(settings?: SettingsType) {
+    settings(settings?: SettingsType): void {
         const fragment = document.createDocumentFragment();
 
         if (settings.hasOwnProperty('buttons')) {
@@ -129,7 +136,7 @@ class Slider {
         this.elementHTML.appendChild(fragment);
     }
 
-    next() {
+    next(): void {
         // get the active element
         let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
         // get count of elements
@@ -147,7 +154,7 @@ class Slider {
         }
     }
 
-    prev() {
+    prev(): void {
         // get the active element
         let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
         // get count of elements
