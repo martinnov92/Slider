@@ -31,19 +31,13 @@ class Slider {
     constructor(element: string, settings?: SettingsType) {
         // get name and element of slider
         this.elementName = element;
-        this.elementHTML = $(element);
+        let elementHTML = this.elementHTML = $(element);
         this.arrayOfChildren = [];
 
-        // get children and save it to array => NodeList to array
-        // only for the first time - later use method
-        let nodeList = $$(this.elementName + ' > *');
-        let childrenOfDiv = Array.prototype.slice.apply(nodeList);
-        childrenOfDiv.forEach((child, i) => {
-            this.arrayOfChildren.push({
-                element: child,
-                active: i === 0 ? true : false
-            });
-        });
+        // document fragment
+        let fragment = document.createDocumentFragment();
+        let innerDiv = this.innerDiv = document.createElement('div');
+        innerDiv.classList.add('m-slider__inner');
 
         // get dimension of parent element - just in case
         this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
@@ -51,9 +45,33 @@ class Slider {
         // click counters
         this.nextClick = 0;
 
+        // append innerDiv
+        elementHTML.appendChild(innerDiv);
+        // get elements and save them to array
+        this.getElements(true);
         // init slider
         this.init();
         this.settings(settings);
+    }
+
+    getElements(init?: boolean) {
+        // get children and save it to array => NodeList to array
+        // only for the first time - later use method
+        let nodeList = $$(this.elementName + ' > *:not(.m-slider__inner)');
+        let childrenOfDiv = Array.prototype.slice.apply(nodeList);
+
+        if (init) {
+            childrenOfDiv.forEach((child, i) => {
+                this.arrayOfChildren.push({
+                    element: child,
+                    active: i === 0 ? true : false
+                });
+            });
+        } else {
+            childrenOfDiv.forEach((child, i) => {
+                this.arrayOfChildren[i].element = child;
+            });
+        }
     }
 
     sliderDimension() {
@@ -61,15 +79,11 @@ class Slider {
     }
 
     init() {
-        // document fragment
-        const fragment = document.createDocumentFragment();
-        let innerDiv = document.createElement('div');
-        innerDiv.classList.add('m-slider__inner');
-
+        let fragment = document.createDocumentFragment();
         // width for new innerDiv = dimension * count of divs
         let totalWidth = this.dimensionOfParent.width * this.arrayOfChildren.length;
-        innerDiv.style.width = totalWidth + 'px';
-        innerDiv.style.height = this.dimensionOfParent.height + 'px';
+        this.innerDiv.style.width = totalWidth + 'px';
+        this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
 
         // add classes to divs and parent div
         this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
@@ -79,13 +93,11 @@ class Slider {
                 child.element.classList.add('m-slider__slide-active');
             }
             child.element.style.width = this.dimensionOfParent.width + 'px';
-            innerDiv.appendChild(child.element);
+            this.innerDiv.appendChild(child.element);
         });
 
-        fragment.appendChild(innerDiv);
+        fragment.appendChild(this.innerDiv);
         this.elementHTML.appendChild(fragment);
-        
-        this.innerDiv = innerDiv;
     }
 
     settings(settings?: SettingsType) {
