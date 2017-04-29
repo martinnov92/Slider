@@ -139,37 +139,45 @@ class Slider {
     next(): void {
         // get the active element
         let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
-        // get count of elements
-        let lengthOfElements = this.arrayOfChildren.length;
+        
         // get current and next active element
         let currentActive = this.arrayOfChildren[indexOfActiveElement];
         let nextActive = this.arrayOfChildren[indexOfActiveElement + 1];
+        
         // change current and next active element's state
-        if (nextActive !== undefined) {
-            currentActive.active = !currentActive.active;
-            nextActive.active = !nextActive.active;
-        } else {
-            currentActive.active = !currentActive.active;
-            this.arrayOfChildren[0].active = true;
+        if (nextActive === undefined) {
+            nextActive = this.arrayOfChildren[0];
         }
+        
+        currentActive.active = !currentActive.active;
+        nextActive.active = !nextActive.active;
+        
+        currentActive.element.classList.remove('m-slider__slide-active');
+        nextActive.element.classList.add('m-slider__slide-active');
+
+        this.getElements();
     }
 
     prev(): void {
         // get the active element
         let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
-        // get count of elements
-        let lengthOfElements = this.arrayOfChildren.length;
+
         // get current and next active element
         let currentActive = this.arrayOfChildren[indexOfActiveElement];
         let prevActive = this.arrayOfChildren[indexOfActiveElement - 1];
+
         // change current and next active element's state
-        if (prevActive !== undefined) {
-            currentActive.active = !currentActive.active;
-            prevActive.active = !prevActive.active;
-        } else {
-            currentActive.active = !currentActive.active;
-            this.arrayOfChildren[this.arrayOfChildren.length - 1].active = true;
+        if (prevActive === undefined) {
+            prevActive = this.arrayOfChildren[this.arrayOfChildren.length - 1];
         }
+            
+        currentActive.active = !currentActive.active;
+        prevActive.active = !prevActive.active;
+
+        currentActive.element.classList.remove('m-slider__slide-active');
+        prevActive.element.classList.add('m-slider__slide-active');
+
+        this.getElements();
     }
 }
 
