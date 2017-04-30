@@ -4,11 +4,14 @@
     box-sizing: border-box;
 }
 
+body {
+    padding: 50px;
+}
+
 .sliderr#slider {
-    width: 400px;
+    width: 100%;
     height: 200px;
-    border: 1px solid red;
-    margin: 50px auto;
+    margin: 0 auto;
 }
 
 .m-slider__slide {
