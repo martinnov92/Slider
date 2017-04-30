@@ -15,12 +15,12 @@
 type SettingsType = {
     buttons?: boolean;
     dots?: boolean;
-}
+};
 
 type childrenOfDivType = {
     element?: HTMLElement;
     active?: boolean;
-}
+};
 
 class Slider {
     elementName: string;
@@ -121,12 +121,12 @@ class Slider {
     setSlider(): void {
         const fragment = document.createDocumentFragment();
 
-        if (this.settings.hasOwnProperty('buttons') || this.defaultSettings.buttons) {
+        if (this.settings.buttons || this.defaultSettings.buttons) {
             let buttons = this.initButtons();
             fragment.appendChild(buttons);
         }
 
-        if (this.settings.hasOwnProperty('dots') || this.defaultSettings.dots) {
+        if (this.settings.dots || this.defaultSettings.dots) {
             let dots = this.initDots();
             fragment.appendChild(dots);
         }
@@ -216,7 +216,7 @@ class Slider {
             if (div.active) {
                 li.classList.add('m-slider__dots-active');
             }
-            
+
             li.innerHTML = 
                 `<button type='button' class='m-slider__dots-btn'></button>`;
 
