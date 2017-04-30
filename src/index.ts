@@ -9,6 +9,7 @@
 // [x] přidat tlačítka
 // [x] vymyslet jak updatovat divy v innerDiv např po resizu, aby se správně nastavil offsetLeft, ...
 //     asi bude stačit zavolat getDimension()
+// [x] updatetovat active class u dots
 // [ ]
 // [ ]
 
@@ -17,7 +18,7 @@ type SettingsType = {
     dots?: boolean;
 };
 
-type childrenOfDivType = {
+type StoreType = {
     element?: HTMLElement;
     dots?: HTMLElement;
     active?: boolean;
@@ -28,7 +29,7 @@ class Slider {
     elementHTML: HTMLElement;
     innerDiv: HTMLElement;
     childrenOfDiv: HTMLElement[];
-    arrayOfChildren: childrenOfDivType[];
+    store: StoreType[];
     dimensionOfParent: ClientRect;
     defaultSettings: SettingsType;
     settings: SettingsType;
@@ -37,7 +38,7 @@ class Slider {
         // get name and element of slider
         this.elementName = element;
         let elementHTML = this.elementHTML = $(element);
-        this.arrayOfChildren = [];
+        this.store = [];
 
         // document fragment
         let fragment = document.createDocumentFragment();
@@ -81,32 +82,32 @@ class Slider {
 
         if (init) {
             childrenOfDiv.forEach((child, i) => {
-                this.arrayOfChildren.push({
+                this.store.push({
                     element: child,
                     active: i === 0 ? true : false
                 });
             });
         } else {
             childrenOfDiv.forEach((child, i) => {
-                this.arrayOfChildren[i].element = child;
+                this.store[i].element = child;
             });
         }
     }
 
     sliderDimension() {
-        console.log(this.arrayOfChildren[0].element.offsetLeft);
+        console.log(this.store[0].element.offsetLeft);
     }
 
     init(): void {
         let fragment = document.createDocumentFragment();
         // width for new innerDiv = dimension * count of divs
-        let totalWidth = this.dimensionOfParent.width * this.arrayOfChildren.length;
+        let totalWidth = this.dimensionOfParent.width * this.store.length;
         this.innerDiv.style.width = totalWidth + 'px';
         this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
 
         // add classes to divs and parent div
         this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
-        this.arrayOfChildren.forEach((child) => {
+        this.store.forEach((child) => {
             child.element.classList.add('m-slider__slide');
             if (child.active) {
                 child.element.classList.add('m-slider__slide-active');
@@ -137,15 +138,15 @@ class Slider {
 
     next(): void {
         // get the active element
-        let indexOfActiveElement = findIndex(this.arrayOfChildren, 'active');
+        let indexOfActiveElement = findIndex(this.store, 'active');
 
         // get current and next active element
-        let currentActive = this.arrayOfChildren[indexOfActiveElement];
-        let nextActive = this.arrayOfChildren[indexOfActiveElement + 1];
+        let currentActive = this.store[indexOfActiveElement];
+        let nextActive = this.store[indexOfActiveElement + 1];
         
         // change current and next active element's state
         if (nextActive === undefined) {
-            nextActive = this.arrayOfChildren[0];
+            nextActive = this.store[0];
         }
         
         currentActive.active = !currentActive.active;
@@ -160,21 +161,21 @@ class Slider {
         }
 
         this.getElements();
-        this.innerDiv.style.transform = `translate3d(-${this.arrayOfChildren[findIndex(this.arrayOfChildren, 'active')].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
     }
 
     prev(): void {
         // get the active element
-        let indexOfActiveElement = findIndex(this.arrayOfChildren, 'active');
+        let indexOfActiveElement = findIndex(this.store, 'active');
 
         // get current and next active element
-        let currentActive = this.arrayOfChildren[indexOfActiveElement];
-        let prevActive = this.arrayOfChildren[indexOfActiveElement - 1];
+        let currentActive = this.store[indexOfActiveElement];
+        let prevActive = this.store[indexOfActiveElement - 1];
 
         // change current and next active element's state
         if (prevActive === undefined) {
-            prevActive = this.arrayOfChildren[this.arrayOfChildren.length - 1];
+            prevActive = this.store[this.store.length - 1];
         }
             
         currentActive.active = !currentActive.active;
@@ -190,7 +191,7 @@ class Slider {
 
         this.getElements();
         this.innerDiv.style.transform = 
-            `translate3d(-${this.arrayOfChildren[findIndex(this.arrayOfChildren, 'active')].element.offsetLeft}px, 0, 0)`;
+            `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
     }
 
@@ -225,7 +226,7 @@ class Slider {
         let div = document.createElement('div');
         let ul = document.createElement('ul');
 
-        this.arrayOfChildren.forEach((div, i) => {
+        this.store.forEach((div, i) => {
             let li = document.createElement('li');
             if (div.active) {
                 li.classList.add('m-slider__dots-active');
