@@ -19,6 +19,7 @@ type SettingsType = {
 
 type childrenOfDivType = {
     element?: HTMLElement;
+    dots?: HTMLElement;
     active?: boolean;
 };
 
@@ -153,6 +154,11 @@ class Slider {
         currentActive.element.classList.remove('m-slider__slide-active');
         nextActive.element.classList.add('m-slider__slide-active');
 
+        if (nextActive.dots !== undefined) {
+            currentActive.dots.classList.remove('m-slider__dots-active');
+            nextActive.dots.classList.add('m-slider__dots-active');
+        }
+
         this.getElements();
         this.innerDiv.style.transform = `translate3d(-${this.arrayOfChildren[findIndex(this.arrayOfChildren, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
@@ -176,6 +182,11 @@ class Slider {
 
         currentActive.element.classList.remove('m-slider__slide-active');
         prevActive.element.classList.add('m-slider__slide-active');
+
+        if (prevActive.dots !== undefined) {
+            currentActive.dots.classList.remove('m-slider__dots-active');
+            prevActive.dots.classList.add('m-slider__dots-active');
+        }
 
         this.getElements();
         this.innerDiv.style.transform = 
@@ -222,6 +233,8 @@ class Slider {
 
             li.innerHTML = 
                 `<button type='button' class='m-slider__dots-btn'></button>`;
+
+            div.dots = li;
 
             ul.appendChild(li);
         })
