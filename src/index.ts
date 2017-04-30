@@ -7,11 +7,14 @@
 // [x] při inicializaci vytvořit nový inner div, který bude mít nastavenou
 //     správnou šířku 
 // [x] přidat tlačítka
-// [ ] vymyslet jak updatovat divy v innerDiv např po resizu, aby se správně nastavil offsetLeft, ...
-// [ ] vymyslet listener pro push v poli + updatovat stav slideru
+// [x] vymyslet jak updatovat divy v innerDiv např po resizu, aby se správně nastavil offsetLeft, ...
+//     asi bude stačit zavolat getDimension()
+// [ ]
+// [ ]
 
 type SettingsType = {
-    buttons?: Boolean;
+    buttons?: boolean;
+    dots?: boolean;
 }
 
 type childrenOfDivType = {
@@ -26,7 +29,8 @@ class Slider {
     childrenOfDiv: HTMLElement[];
     arrayOfChildren: childrenOfDivType[];
     dimensionOfParent: ClientRect;
-    nextClick: number;
+    defaultSettings: SettingsType;
+    settings: SettingsType;
 
     constructor(element: string, settings?: SettingsType) {
         // get name and element of slider
@@ -42,16 +46,23 @@ class Slider {
         // get dimension of parent element - just in case
         this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
 
-        // click counters
-        this.nextClick = 0;
-
         // append innerDiv
         elementHTML.appendChild(innerDiv);
-        // get elements and save them to array
-        this.getElements(true);
+
         // init slider
+        this.getElements(true);
         this.init();
-        this.settings(settings);
+
+        // default settings
+        this.defaultSettings = {
+            buttons: true,
+            dots: false
+        }
+
+        this.settings = Object.assign({}, settings);
+                
+        // settings
+        this.setSlider();
     }
 
     getElements(init?: boolean): void {
@@ -62,7 +73,7 @@ class Slider {
         if (init) {
             nodeList = $$(this.elementName + ' > *:not(.m-slider__inner)');
         } else {
-            nodeList = $$(this.elementName + ' > div > *');
+            nodeList = $$(this.elementName + ' > div > div[class="m-slider__slide"]');
         }
 
         let childrenOfDiv = Array.prototype.slice.apply(nodeList);
@@ -107,30 +118,17 @@ class Slider {
         this.elementHTML.appendChild(fragment);
     }
 
-    settings(settings?: SettingsType): void {
+    setSlider(): void {
         const fragment = document.createDocumentFragment();
 
-        if (settings.hasOwnProperty('buttons')) {
-            let nextButton = document.createElement('button');
-            let prevButton = document.createElement('button');
+        if (this.settings.hasOwnProperty('buttons') || this.defaultSettings.buttons) {
+            let buttons = this.initButtons();
+            fragment.appendChild(buttons);
+        }
 
-            nextButton.setAttribute('type',  'button');
-            nextButton.setAttribute('title', 'Next slide');
-
-            prevButton.setAttribute('type',  'button');
-            prevButton.setAttribute('title', 'Previous slide');
-
-            nextButton.onclick = () => this.next();
-            prevButton.onclick = () => this.prev();
-
-            nextButton.textContent = 'Next';
-            prevButton.textContent = 'Prev';
-
-            nextButton.classList.add('m-slider__button', 'm-slider__button-next');
-            prevButton.classList.add('m-slider__button', 'm-slider__button-prev');
-
-            fragment.appendChild(nextButton);
-            fragment.appendChild(prevButton);
+        if (this.settings.hasOwnProperty('dots') || this.defaultSettings.dots) {
+            let dots = this.initDots();
+            fragment.appendChild(dots);
         }
         
         this.elementHTML.appendChild(fragment);
@@ -156,6 +154,8 @@ class Slider {
         nextActive.element.classList.add('m-slider__slide-active');
 
         this.getElements();
+        this.innerDiv.style.transform = `translate3d(-${this.arrayOfChildren[this.arrayOfChildren.findIndex((child) => child.active)].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.overflow = 'auto';
     }
 
     prev(): void {
@@ -178,6 +178,57 @@ class Slider {
         prevActive.element.classList.add('m-slider__slide-active');
 
         this.getElements();
+    }
+
+    initButtons() {
+        let fragment = document.createDocumentFragment();
+        let nextButton = document.createElement('button');
+        let prevButton = document.createElement('button');
+
+        nextButton.setAttribute('type',  'button');
+        nextButton.setAttribute('title', 'Next slide');
+
+        prevButton.setAttribute('type',  'button');
+        prevButton.setAttribute('title', 'Previous slide');
+
+        nextButton.onclick = () => this.next();
+        prevButton.onclick = () => this.prev();
+
+        nextButton.textContent = 'Next';
+        prevButton.textContent = 'Prev';
+
+        nextButton.classList.add('m-slider__button', 'm-slider__button-next');
+        prevButton.classList.add('m-slider__button', 'm-slider__button-prev');
+
+        fragment.appendChild(nextButton);
+        fragment.appendChild(prevButton);
+
+        return fragment;
+    }
+
+    initDots() {
+        let fragment = document.createDocumentFragment();
+        let div = document.createElement('div');
+        let ul = document.createElement('ul');
+
+        this.arrayOfChildren.forEach((div, i) => {
+            let li = document.createElement('li');
+            if (div.active) {
+                li.classList.add('m-slider__dots-active');
+            }
+            
+            li.innerHTML = 
+                `<button type='button' class='m-slider__dots-btn'></button>`;
+
+            ul.appendChild(li);
+        })
+
+        div.classList.add('m-slider__dots');
+        div.appendChild(ul);
+
+        fragment.appendChild(div);
+
+        return fragment;
     }
 }
 

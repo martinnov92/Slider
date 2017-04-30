@@ -21,6 +21,7 @@
   "homepage": "https://github.com/martinnov92/Slider#readme",
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-minify": "0.0.15"
+    "gulp-minify": "0.0.15",
+    "gulp-sass": "^3.1.0"
   }
 }
