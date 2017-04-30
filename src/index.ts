@@ -11,7 +11,7 @@
 //     asi bude stačit zavolat getDimension()
 // [x] updatetovat active class u dots
 // [x] custom buttons
-// [ ]
+// [ ] upravit velikosti po resizu
 
 type customButtons = {
     prev: string,
@@ -74,6 +74,10 @@ class Slider {
                 
         // settings
         this.setSlider();
+
+        window.addEventListener('resize', () => {
+            this.sliderDimension();
+        });
     }
 
     getElements(init?: boolean): void {
@@ -104,7 +108,23 @@ class Slider {
     }
 
     sliderDimension() {
-        console.log(this.store[0].element.offsetLeft);
+        console.log('resize');
+        // TODO: set sizes after resize
+        this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
+        let totalWidth = this.dimensionOfParent.width * this.store.length;
+        this.innerDiv.style.width = totalWidth + 'px';
+
+        this.store.forEach((child) => {
+            child.element.style.width = this.dimensionOfParent.width + 'px';
+            console.log(this.dimensionOfParent.width);
+        });
+
+        // odstranit po resize
+        // https://css-tricks.com/snippets/jquery/done-resizing-event/
+        this.innerDiv.style.transition = 'none'; 
+        // translate3d
+        this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.overflow = 'auto';
     }
 
     init(): void {
