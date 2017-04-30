@@ -17,8 +17,13 @@
     <script src="./lib/index.js"></script>
     <script>
         var a = new Slider("#slider", {
+            defaultButtons: false,
             dots: true,
             //floatingDots: false
+            customButtons: {
+                prev: '<button type="button">Previous</button>',
+                next: '<button type="button">Next</button>',
+            }
         });
     </script>
 </body>

@@ -10,14 +10,19 @@
 // [x] vymyslet jak updatovat divy v innerDiv např po resizu, aby se správně nastavil offsetLeft, ...
 //     asi bude stačit zavolat getDimension()
 // [x] updatetovat active class u dots
-// [ ]
+// [x] custom buttons
 // [ ]
 
+type customButtons = {
+    prev: string,
+    next: string
+}
+
 type SettingsType = {
-    buttons?: boolean;
+    defaultButtons?: boolean;
     dots?: boolean;
     floatingDots?: boolean;
-    customButtons?: HTMLElement[];
+    customButtons?: customButtons;
 };
 
 type StoreType = {
@@ -59,10 +64,10 @@ class Slider {
 
         // default settings
         this.defaultSettings = {
-            buttons: true,
+            defaultButtons: true,
             dots: false,
             floatingDots: true,
-            customButtons: []
+            customButtons: undefined
         }
 
         this.settings = Object.assign({}, settings);
@@ -127,7 +132,13 @@ class Slider {
     setSlider(): void {
         const fragment = document.createDocumentFragment();
 
-        if (this.settings.buttons || this.defaultSettings.buttons) {
+        if (this.settings.customButtons !== undefined && this.settings.defaultButtons === false) {
+            if (this.settings.customButtons.hasOwnProperty('prev') 
+                && this.settings.customButtons.hasOwnProperty('next')) {
+                let buttons = this.customButtons();
+                fragment.appendChild(buttons);
+            }
+        } else if (this.settings.defaultButtons || this.defaultSettings.defaultButtons) {
             let buttons = this.initButtons();
             fragment.appendChild(buttons);
         }
@@ -135,8 +146,8 @@ class Slider {
         if (this.settings.dots || this.defaultSettings.dots) {
             let dots = this.initDots();
             fragment.appendChild(dots);
-        }
-        
+        }        
+
         this.elementHTML.appendChild(fragment);
     }
 
@@ -221,6 +232,28 @@ class Slider {
 
         fragment.appendChild(nextButton);
         fragment.appendChild(prevButton);
+
+        return fragment;
+    }
+
+    customButtons() {
+        let fragment = document.createDocumentFragment();
+        let prevButtonDiv = document.createElement('div');
+        let nextButtonDiv = document.createElement('div');
+        let prevButton = this.settings.customButtons.prev;
+        let nextButton = this.settings.customButtons.next;
+
+        prevButtonDiv.innerHTML = prevButton;
+        nextButtonDiv.innerHTML = nextButton;
+
+        prevButtonDiv.classList.add('m-slider__button', 'm-slider__button-prev');
+        nextButtonDiv.classList.add('m-slider__button', 'm-slider__button-next');
+
+        prevButtonDiv.addEventListener('click', () => this.prev());
+        nextButtonDiv.addEventListener('click', () => this.next());
+
+        fragment.appendChild(prevButtonDiv);
+        fragment.appendChild(nextButtonDiv);
 
         return fragment;
     }
