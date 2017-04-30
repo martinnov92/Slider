@@ -59,8 +59,12 @@
     align-content: center;
     align-items: center;
     text-align: center;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+
+    &.m-slider__dots-floating {
+        position: absolute;
+        bottom: 0;
+    }
 
     ul {
         width: 100%;

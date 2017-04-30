@@ -16,6 +16,8 @@
 type SettingsType = {
     buttons?: boolean;
     dots?: boolean;
+    floatingDots?: boolean;
+    customButtons?: HTMLElement[];
 };
 
 type StoreType = {
@@ -58,7 +60,9 @@ class Slider {
         // default settings
         this.defaultSettings = {
             buttons: true,
-            dots: false
+            dots: false,
+            floatingDots: true,
+            customButtons: []
         }
 
         this.settings = Object.assign({}, settings);
@@ -240,7 +244,12 @@ class Slider {
             ul.appendChild(li);
         })
 
-        div.classList.add('m-slider__dots');
+        div.classList.add('m-slider__dots', 'm-slider__dots-floating');
+
+        if (this.settings.floatingDots === false) {
+            div.classList.remove('m-slider__dots-floating')
+        }
+
         div.appendChild(ul);
 
         fragment.appendChild(div);
@@ -250,13 +259,7 @@ class Slider {
 }
 
 /*
-**
-**
-**
     MY LITTLE JQUERY - HELPERS FUNCTIONS
-**
-**
-**
 */
 
 function $(selector?: any, container?: any): HTMLElement {
