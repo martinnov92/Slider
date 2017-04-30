@@ -247,11 +247,15 @@ class Slider {
         div.classList.add('m-slider__dots', 'm-slider__dots-floating');
 
         if (this.settings.floatingDots === false) {
-            div.classList.remove('m-slider__dots-floating')
+            div.classList.remove('m-slider__dots-floating');
+            
+            // if no floating dots => set new height to parent element
+
+            //this.elementHTML.style.height = this.dimensionOfParent.height + div.getBoundingClientRect().height + 'px';
+            //console.log(div.getBoundingClientRect().height);
         }
 
         div.appendChild(ul);
-
         fragment.appendChild(div);
 
         return fragment;
