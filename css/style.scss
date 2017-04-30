@@ -71,11 +71,18 @@
             display: inline-block;
 
             .m-slider__dots-btn {
-                width: 10px;
-                height: 10px;
-                background-color: rgba(255, 255, 255, .8);
+                width: 7px;
+                height: 7px;
+                background-color: rgba(0, 0, 0, .3);
                 border: 0;
                 border-radius: 50px;
+                outline: none;
+            }
+
+            &.m-slider__dots-active {
+                button {
+                    background-color: rgba(0, 0, 0, .7);
+                }
             }
 
             & + li {

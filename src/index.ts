@@ -136,8 +136,8 @@ class Slider {
 
     next(): void {
         // get the active element
-        let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
-        
+        let indexOfActiveElement = findIndex(this.arrayOfChildren, 'active');
+
         // get current and next active element
         let currentActive = this.arrayOfChildren[indexOfActiveElement];
         let nextActive = this.arrayOfChildren[indexOfActiveElement + 1];
@@ -154,13 +154,13 @@ class Slider {
         nextActive.element.classList.add('m-slider__slide-active');
 
         this.getElements();
-        this.innerDiv.style.transform = `translate3d(-${this.arrayOfChildren[this.arrayOfChildren.findIndex((child) => child.active)].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.transform = `translate3d(-${this.arrayOfChildren[findIndex(this.arrayOfChildren, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
     }
 
     prev(): void {
         // get the active element
-        let indexOfActiveElement = this.arrayOfChildren.findIndex((child) => child.active);
+        let indexOfActiveElement = findIndex(this.arrayOfChildren, 'active');
 
         // get current and next active element
         let currentActive = this.arrayOfChildren[indexOfActiveElement];
@@ -178,6 +178,9 @@ class Slider {
         prevActive.element.classList.add('m-slider__slide-active');
 
         this.getElements();
+        this.innerDiv.style.transform = 
+            `translate3d(-${this.arrayOfChildren[findIndex(this.arrayOfChildren, 'active')].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.overflow = 'auto';
     }
 
     initButtons() {
@@ -248,4 +251,14 @@ function $(selector?: any, container?: any): HTMLElement {
 
 function $$(selector?: any, container?: any): HTMLElement[] {
     return (container ? document.querySelectorAll(container) : document).querySelectorAll(selector);
+}
+
+function findIndex(arr: any[], lookingFor: string): number {
+    let index = -1;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i][lookingFor]) {
+            index = i;
+        }
+    }
+    return index;
 }

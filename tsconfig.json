@@ -1,6 +1,13 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "lib": [
+            "es6",
+            "es5",
+            "es2015",
+            "dom",
+            "dom.iterable"            
+        ],
         "target": "es3",
         "module": "commonjs",
         "watch": true,
