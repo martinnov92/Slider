@@ -12,6 +12,7 @@
 // [x] updatetovat active class u dots
 // [x] custom buttons
 // [x] upravit velikosti po resizu
+// [ ] dát transform do samostatené funkce, protože je potřeba to volat na více místech !!
 // [ ] upravit možnost dots - umístit pod carousel
 // [ ] přidat title k tlačítkům v dots
 
@@ -298,17 +299,20 @@ class Slider {
 
         this.store.forEach((div, i) => {
             let li = document.createElement('li');
+            let btn = document.createElement('button');
+            btn.type = 'button';
+            btn.classList.add('m-slider__dots-btn');
+            btn.onclick = () => this.handleDotClick(i);
+
             if (div.active) {
                 li.classList.add('m-slider__dots-active');
             }
 
-            li.innerHTML = 
-                `<button type='button' class='m-slider__dots-btn' title=''></button>`;
-
-            div.dots = li;
+            li.appendChild(btn);
+            div.dots = li; // add li to object array
 
             ul.appendChild(li);
-        })
+        });
 
         div.classList.add('m-slider__dots', 'm-slider__dots-floating');
 
@@ -325,6 +329,17 @@ class Slider {
         fragment.appendChild(div);
 
         return fragment;
+    }
+
+    handleDotClick(index?: number) {
+        let currentActive = findIndex(this.store, 'active');
+        this.store[currentActive].active = false;
+        this.store[index].active = true;
+
+        // TODO: add transform to method, because it is called on several places
+        this.innerDiv.style.transform = 
+            `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
+        this.innerDiv.style.overflow = 'auto';
     }
 }
 
