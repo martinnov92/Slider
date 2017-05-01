@@ -11,7 +11,9 @@ body {
   height: 200px;
   margin: 0 auto; }
 
-.m-slider__slide {
+.m-slider__slide p {
+  width: 100%;
+  height: 100%;
   background: #eeff56; }
 
 .m-slider__slide:nth-child(2) {

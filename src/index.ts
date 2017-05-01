@@ -93,7 +93,6 @@ class Slider {
 
     getElements(init?: boolean): void {
         // get children and save it to array => NodeList to array
-        // only for the first time - later use method
         let nodeList = [];
 
         if (init) {
@@ -203,7 +202,7 @@ class Slider {
             nextActive.dots.classList.add('m-slider__dots-active');
         }
 
-        this.getElements();
+        //this.getElements(); - TODO: nepotřebuji?
         this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
 
@@ -235,7 +234,7 @@ class Slider {
             prevActive.dots.classList.add('m-slider__dots-active');
         }
 
-        this.getElements();
+        //this.getElements(); - TODO: nepotřebuji?
         this.innerDiv.style.transform = 
             `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';

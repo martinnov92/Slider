@@ -15,7 +15,12 @@ body {
 }
 
 .m-slider__slide {
-    background: #eeff56;
+    
+    p {
+        width: 100%;
+        height: 100%;
+        background: #eeff56;
+    }
 }
 
 .m-slider__slide:nth-child(2) {
