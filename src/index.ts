@@ -1,6 +1,6 @@
 // TODO
 
-// [ ] propočty velikostí dát do samostatné funkce, která se bude volat např. po resizu
+// [x] propočty velikostí dát do samostatné funkce, která se bude volat např. po resizu
 // [x] zkusit nastavit gulp pro minifikaci
 // [x] zjistit všechny potomky zadaného elementu 
 // [x] zjistit velikost rodičovského elementu a tu nastavit slideru
@@ -12,6 +12,8 @@
 // [x] updatetovat active class u dots
 // [x] custom buttons
 // [x] upravit velikosti po resizu
+// [ ] upravit možnost dots - umístit pod carousel
+// [ ] přidat title k tlačítkům v dots
 
 type customButtons = {
     prev: string,
@@ -204,6 +206,9 @@ class Slider {
         this.getElements();
         this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
+
+        // call this to correct widths, offsets - just in case
+        this.sliderDimension();
     }
 
     prev(): void {
@@ -234,6 +239,9 @@ class Slider {
         this.innerDiv.style.transform = 
             `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
+
+        // call this to correct widths, offsets - just in case
+        this.sliderDimension();
     }
 
     initButtons() {
@@ -296,7 +304,7 @@ class Slider {
             }
 
             li.innerHTML = 
-                `<button type='button' class='m-slider__dots-btn'></button>`;
+                `<button type='button' class='m-slider__dots-btn' title=''></button>`;
 
             div.dots = li;
 
