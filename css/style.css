@@ -32,6 +32,8 @@ body {
       height: 100%;
       overflow: auto;
       float: left; }
+  .m-slider__wrapper.m-slider-resizing .m-slider__inner {
+    transition: none; }
   .m-slider__wrapper .m-slider__button {
     position: absolute;
     top: 50%;

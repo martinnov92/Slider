@@ -11,7 +11,7 @@
 //     asi bude stačit zavolat getDimension()
 // [x] updatetovat active class u dots
 // [x] custom buttons
-// [ ] upravit velikosti po resizu
+// [x] upravit velikosti po resizu
 
 type customButtons = {
     prev: string,
@@ -43,9 +43,10 @@ class Slider {
 
     constructor(element: string, settings?: SettingsType) {
         // get name and element of slider
-        this.elementName = element;
         let elementHTML = this.elementHTML = $(element);
+        this.elementName = element;
         this.store = [];
+        var resizeTimer;
 
         // document fragment
         let fragment = document.createDocumentFragment();
@@ -69,13 +70,21 @@ class Slider {
             floatingDots: true,
             customButtons: undefined
         }
-
         this.settings = Object.assign({}, settings);
                 
-        // settings
+        // set slider according to given settings
         this.setSlider();
 
         window.addEventListener('resize', () => {
+            this.elementHTML.classList.add('m-slider-resizing');
+            clearTimeout(resizeTimer);
+
+            // check if resizing has stopped
+            // and if yes, remove class
+            resizeTimer = setTimeout(() => {
+                this.elementHTML.classList.remove('m-slider-resizing');
+            }, 250);
+
             this.sliderDimension();
         });
     }
@@ -108,21 +117,18 @@ class Slider {
     }
 
     sliderDimension() {
-        console.log('resize');
-        // TODO: set sizes after resize
+        // get and save new dimensions of parent
         this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
+        // new width
         let totalWidth = this.dimensionOfParent.width * this.store.length;
         this.innerDiv.style.width = totalWidth + 'px';
 
+        // for every div set correct size
         this.store.forEach((child) => {
             child.element.style.width = this.dimensionOfParent.width + 'px';
-            console.log(this.dimensionOfParent.width);
         });
 
-        // odstranit po resize
-        // https://css-tricks.com/snippets/jquery/done-resizing-event/
-        this.innerDiv.style.transition = 'none'; 
-        // translate3d
+        // set correct position of innerDiv
         this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
     }

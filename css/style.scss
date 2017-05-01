@@ -41,6 +41,12 @@ body {
             float: left;
         }
     }
+
+    &.m-slider-resizing {
+        .m-slider__inner {
+            transition: none;
+        }
+    }
     
     .m-slider__button {
         position: absolute;
