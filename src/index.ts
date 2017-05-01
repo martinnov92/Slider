@@ -12,7 +12,7 @@
 // [x] updatetovat active class u dots
 // [x] custom buttons
 // [x] upravit velikosti po resizu
-// [ ] dát transform do samostatené funkce, protože je potřeba to volat na více místech !!
+// [x] dát transform do samostatené funkce, protože je potřeba to volat na více místech !!
 // [ ] upravit možnost dots - umístit pod carousel
 // [ ] přidat title k tlačítkům v dots
 
@@ -131,8 +131,7 @@ class Slider {
         });
 
         // set correct position of innerDiv
-        this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
-        this.innerDiv.style.overflow = 'auto';
+        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
     }
 
     init(): void {
@@ -203,9 +202,7 @@ class Slider {
             nextActive.dots.classList.add('m-slider__dots-active');
         }
 
-        //this.getElements(); - TODO: nepotřebuji?
-        this.innerDiv.style.transform = `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
-        this.innerDiv.style.overflow = 'auto';
+        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
 
         // call this to correct widths, offsets - just in case
         this.sliderDimension();
@@ -235,11 +232,7 @@ class Slider {
             prevActive.dots.classList.add('m-slider__dots-active');
         }
 
-        //this.getElements(); - TODO: nepotřebuji?
-        this.innerDiv.style.transform = 
-            `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
-        this.innerDiv.style.overflow = 'auto';
-
+        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
         // call this to correct widths, offsets - just in case
         this.sliderDimension();
     }
@@ -335,10 +328,12 @@ class Slider {
         let currentActive = findIndex(this.store, 'active');
         this.store[currentActive].active = false;
         this.store[index].active = true;
+        // move slide
+        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
+    }
 
-        // TODO: add transform to method, because it is called on several places
-        this.innerDiv.style.transform = 
-            `translate3d(-${this.store[findIndex(this.store, 'active')].element.offsetLeft}px, 0, 0)`;
+    moveSlide(offset: number) {
+        this.innerDiv.style.transform = `translate3d(-${offset}px, 0, 0)`;
         this.innerDiv.style.overflow = 'auto';
     }
 }
