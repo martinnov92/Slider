@@ -258,8 +258,8 @@ class Slider {
         nextButton.onclick = () => this.next();
         prevButton.onclick = () => this.prev();
 
-        nextButton.textContent = 'Next';
-        prevButton.textContent = 'Prev';
+        nextButton.textContent = '>';
+        prevButton.textContent = '<';
 
         nextButton.classList.add('m-slider__button', 'm-slider__button-next');
         prevButton.classList.add('m-slider__button', 'm-slider__button-prev');

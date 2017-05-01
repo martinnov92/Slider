@@ -4,27 +4,48 @@
     box-sizing: border-box;
 }
 
-body {
-    padding: 50px;
+html {
+    font-size: 14px;
 }
 
-.sliderr#slider {
+body {
+    width: 100vw;
+    height: 100vh;
+    background-image: url(bg.png);
+}
+
+.main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.sliderr {
     width: 100%;
     height: 200px;
     margin: 0 auto;
 }
 
+.slider2 {
+    width: 100%;
+    height: 200px;
+
+    .m-slider__slide {
+        padding: 10px 50px;
+    }
+
+    .m-slider__slide,
+    .m-slider__slide > p {
+        background-color: #fff;
+    }
+}
+
 .m-slider__slide {
-    
     p {
         width: 100%;
         height: 100%;
         background: #eeff56;
     }
-}
-
-.m-slider__slide:nth-child(2) {
-    background: #c56;
 }
 
 /***** M-SLIDER CSS STYLES *****/
@@ -57,7 +78,19 @@ body {
         position: absolute;
         top: 50%;
         left: 0;
-        margin: 0 10px;
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1;
+        font-weight: bold;
+        background-color: rgba(0, 0, 0, .1);
+        border: 0;
+        border-radius: 50%;
+        margin: -10px 10px 10px 10px;
+        padding: 10px;
+        outline: none;
+        cursor: pointer;
 
         &.m-slider__button-next {
             left: unset;
@@ -95,11 +128,13 @@ body {
                 border: 0;
                 border-radius: 50px;
                 outline: none;
-                transition: background ease-in-out 300ms;
+                transform: scale(1);
+                transition: background ease-in-out 300ms, transform ease-in-out 300ms;
             }
 
             &.m-slider__dots-active {
                 button {
+                    transform: scale(1.2);
                     background-color: rgba(0, 0, 0, .7);
                 }
             }

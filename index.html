@@ -8,13 +8,31 @@
 </head>
 <body>
 
-    <div class="sliderr" id="slider">
-        <div><p>First slide</p></div>
-        <div><p>Second slide</p></div>
-        <div><p>Third slide</p></div>
-        <div><p>Fourth slide</p></div>
-        <div><p>Fifth slide</p></div>
-        <div><p>Sixth slide</p></div>
+    <div class="slider2">
+        <div class="sliderr" id="header-slider">
+            <div>
+                <h2>First step</h2>
+                <pre>
+                    <code>
+                        <span><span><</span>script src="url to carousel"></span>
+                        <span><span><</span>/script></span>
+                    </code>
+                </pre>
+            </div>
+            <div><p>Second slide</p></div>
+            <div><p>Third slide</p></div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="sliderr" id="slider">
+            <div><p>First slide</p></div>
+            <div><p>Second slide</p></div>
+            <div><p>Third slide</p></div>
+            <div><p>Fourth slide</p></div>
+            <div><p>Fifth slide</p></div>
+            <div><p>Sixth slide</p></div>
+        </div>
     </div>
 
     <script src="./lib/index.js"></script>
@@ -27,6 +45,11 @@
                 prev: '<button type="button">Previous</button>',
                 next: '<button type="button">Next</button>',
             }
+        });
+
+        var b = new Slider("#header-slider", {
+            defaultButtons: true,
+            dots: true
         });
     </script>
 </body>
