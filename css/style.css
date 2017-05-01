@@ -98,7 +98,8 @@ body {
         border-radius: 50px;
         outline: none;
         transform: scale(1);
-        transition: background ease-in-out 300ms, transform ease-in-out 300ms; }
+        transition: background ease-in-out 300ms, transform ease-in-out 300ms;
+        cursor: pointer; }
       .m-slider__dots ul li.m-slider__dots-active button {
         transform: scale(1.2);
         background-color: rgba(0, 0, 0, 0.7); }

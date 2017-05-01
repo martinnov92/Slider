@@ -130,6 +130,7 @@ body {
                 outline: none;
                 transform: scale(1);
                 transition: background ease-in-out 300ms, transform ease-in-out 300ms;
+                cursor: pointer;
             }
 
             &.m-slider__dots-active {

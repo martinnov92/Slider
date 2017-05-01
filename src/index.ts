@@ -1,5 +1,4 @@
-// TODO
-
+// ****TODO LIST****
 // [x] propočty velikostí dát do samostatné funkce, která se bude volat např. po resizu
 // [x] zkusit nastavit gulp pro minifikaci
 // [x] zjistit všechny potomky zadaného elementu 
@@ -15,6 +14,7 @@
 // [x] dát transform do samostatené funkce, protože je potřeba to volat na více místech !!
 // [ ] upravit možnost dots - umístit pod carousel
 // [ ] přidat title k tlačítkům v dots
+// - bude fungovat tak, že k divům v carouselu se přidá data-buttonTitle="Button title"
 
 type customButtons = {
     prev: string,
@@ -92,6 +92,28 @@ class Slider {
         });
     }
 
+    init(): void {
+        let fragment = document.createDocumentFragment();
+        // width for new innerDiv = dimension * count of divs
+        let totalWidth = this.dimensionOfParent.width * this.store.length;
+        this.innerDiv.style.width = totalWidth + 'px';
+        this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
+
+        // add classes to divs and parent div
+        this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
+        this.store.forEach((child) => {
+            child.element.classList.add('m-slider__slide');
+            if (child.active) {
+                child.element.classList.add('m-slider__slide-active');
+            }
+            child.element.style.width = this.dimensionOfParent.width + 'px';
+            this.innerDiv.appendChild(child.element);
+        });
+
+        fragment.appendChild(this.innerDiv);
+        this.elementHTML.appendChild(fragment);
+    }
+
     getElements(init?: boolean): void {
         // get children and save it to array => NodeList to array
         let nodeList = [];
@@ -116,44 +138,6 @@ class Slider {
                 this.store[i].element = child;
             });
         }
-    }
-
-    sliderDimension() {
-        // get and save new dimensions of parent
-        this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
-        // new width
-        let totalWidth = this.dimensionOfParent.width * this.store.length;
-        this.innerDiv.style.width = totalWidth + 'px';
-
-        // for every div set correct size
-        this.store.forEach((child) => {
-            child.element.style.width = this.dimensionOfParent.width + 'px';
-        });
-
-        // set correct position of innerDiv
-        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
-    }
-
-    init(): void {
-        let fragment = document.createDocumentFragment();
-        // width for new innerDiv = dimension * count of divs
-        let totalWidth = this.dimensionOfParent.width * this.store.length;
-        this.innerDiv.style.width = totalWidth + 'px';
-        this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
-
-        // add classes to divs and parent div
-        this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
-        this.store.forEach((child) => {
-            child.element.classList.add('m-slider__slide');
-            if (child.active) {
-                child.element.classList.add('m-slider__slide-active');
-            }
-            child.element.style.width = this.dimensionOfParent.width + 'px';
-            this.innerDiv.appendChild(child.element);
-        });
-
-        fragment.appendChild(this.innerDiv);
-        this.elementHTML.appendChild(fragment);
     }
 
     setSlider(): void {
@@ -326,9 +310,32 @@ class Slider {
 
     handleDotClick(index?: number) {
         let currentActive = findIndex(this.store, 'active');
+        // not active
         this.store[currentActive].active = false;
+        this.store[currentActive].element.classList.remove('m-slider__slide-active');
+        this.store[currentActive].dots.classList.remove('m-slider__dots-active');
+        // active
         this.store[index].active = true;
+        this.store[index].element.classList.add('m-slider__slide-active');
+        this.store[index].dots.classList.add('m-slider__dots-active');
         // move slide
+        this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
+    }
+
+    //*********************************************************************************//
+    sliderDimension() {
+        // get and save new dimensions of parent
+        this.dimensionOfParent = this.elementHTML.getBoundingClientRect();
+        // new width
+        let totalWidth = this.dimensionOfParent.width * this.store.length;
+        this.innerDiv.style.width = totalWidth + 'px';
+
+        // for every div set correct size
+        this.store.forEach((child) => {
+            child.element.style.width = this.dimensionOfParent.width + 'px';
+        });
+
+        // set correct position of innerDiv
         this.moveSlide(this.store[findIndex(this.store, 'active')].element.offsetLeft);
     }
 
