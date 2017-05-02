@@ -112,6 +112,7 @@ class Slider {
             if (child.active) {
                 child.element.classList.add('m-slider__slide-active');
             }
+            // TODO: itemsPerSlide
             child.element.style.width = this.dimensionOfParent.width + 'px';
             this.innerDiv.appendChild(child.element);
         });
@@ -339,6 +340,7 @@ class Slider {
 
         // for every div set correct size
         this.store.forEach((child) => {
+            // TODO: itemsPerSlide
             child.element.style.width = this.dimensionOfParent.width + 'px';
         });
 
