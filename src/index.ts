@@ -32,6 +32,7 @@ type SettingsType = {
     floatingDots?: boolean;
     customButtons?: customButtons;
     itemsPerSlide?: number;
+    scrollBy?: number;
 };
 
 type StoreType = {
@@ -104,6 +105,7 @@ class Slider {
         let totalWidth = this.dimensionOfParent.width * this.store.length;
         this.innerDiv.style.width = totalWidth + 'px';
         this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
+        let dividedBy = 1;
         
         // add classes to divs and parent div
         this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
@@ -112,8 +114,13 @@ class Slider {
             if (child.active) {
                 child.element.classList.add('m-slider__slide-active');
             }
-            // TODO: itemsPerSlide
-            child.element.style.width = this.dimensionOfParent.width + 'px';
+
+            if (this.settings.itemsPerSlide !== undefined) {
+                dividedBy = this.settings.itemsPerSlide;
+            }
+
+            child.element.style.width = 
+                Math.round(this.dimensionOfParent.width / dividedBy) + 'px';
             this.innerDiv.appendChild(child.element);
         });
 
@@ -170,12 +177,18 @@ class Slider {
     }
 
     next(): void {
+        // TODO: scrollBy - vyřešit, když bude méněpložek / scrollBy
         // get the active element
         let indexOfActiveElement = findIndex(this.store, 'active');
+        let scrollBy = 1;
+
+        if (this.settings.scrollBy !== undefined) {
+            scrollBy = this.settings.scrollBy;
+        }
 
         // get current and next active element
         let currentActive = this.store[indexOfActiveElement];
-        let nextActive = this.store[indexOfActiveElement + 1];
+        let nextActive = this.store[indexOfActiveElement + scrollBy];
         
         // change current and next active element's state
         if (nextActive === undefined) {
@@ -202,10 +215,15 @@ class Slider {
     prev(): void {
         // get the active element
         let indexOfActiveElement = findIndex(this.store, 'active');
+        let scrollBy = 0;
+
+        if (this.settings.scrollBy !== undefined) {
+            scrollBy = this.settings.scrollBy;
+        }
 
         // get current and next active element
         let currentActive = this.store[indexOfActiveElement];
-        let prevActive = this.store[indexOfActiveElement - 1];
+        let prevActive = this.store[indexOfActiveElement - 1 - scrollBy];
 
         // change current and next active element's state
         if (prevActive === undefined) {
@@ -277,6 +295,7 @@ class Slider {
     }
 
     initDots() {
+        // TODO: scrollBy
         let fragment = document.createDocumentFragment();
         let div = document.createElement('div');
         let ul = document.createElement('ul');
@@ -337,11 +356,15 @@ class Slider {
         // new width
         let totalWidth = this.dimensionOfParent.width * this.store.length;
         this.innerDiv.style.width = totalWidth + 'px';
+        let dividedBy = 1;
 
         // for every div set correct size
         this.store.forEach((child) => {
-            // TODO: itemsPerSlide
-            child.element.style.width = this.dimensionOfParent.width + 'px';
+            if (this.settings.itemsPerSlide !== undefined) {
+                dividedBy = this.settings.itemsPerSlide;
+            }
+            child.element.style.width = 
+                Math.ceil(this.dimensionOfParent.width / dividedBy) + 'px';
         });
 
         // set correct position of innerDiv
