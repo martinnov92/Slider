@@ -73,7 +73,7 @@ class Slider {
             floatingDots: true,
             customButtons: undefined
         }
-        this.settings = Object.assign({}, settings);
+        this.settings = settings;
                 
         // set slider according to given settings
         this.setSlider();
