@@ -12,9 +12,14 @@
 // [x] custom buttons
 // [x] upravit velikosti po resizu
 // [x] dát transform do samostatené funkce, protože je potřeba to volat na více místech !!
-// [ ] upravit možnost dots - umístit pod carousel
-// [ ] přidat title k tlačítkům v dots
-// - bude fungovat tak, že k divům v carouselu se přidá data-buttonTitle="Button title"
+// [x] přidat title k tlačítkům v dots
+// [ ] v IE se dots zobrazují pod carouselem
+// [ ] upravit možnost dots - umístit pod carouselem - opravit
+// [ ] přidat možnost pro více položek (slidů) v jedom zobrazení - itemsPerSlide
+// [ ] od Jiřky: při více položkách mít stejné mezery + zarovnáno zleva/zprava - úplně naboku
+// --------------------------------------------
+// start - |[Slide1]  [Slide2]  [Slide3]| - end
+// --------------------------------------------
 
 type customButtons = {
     prev: string,
@@ -26,6 +31,7 @@ type SettingsType = {
     dots?: boolean;
     floatingDots?: boolean;
     customButtons?: customButtons;
+    itemsPerSlide?: number;
 };
 
 type StoreType = {
@@ -62,10 +68,6 @@ class Slider {
         // append innerDiv
         elementHTML.appendChild(innerDiv);
 
-        // init slider
-        this.getElements(true);
-        this.init();
-
         // default settings
         this.defaultSettings = {
             defaultButtons: true,
@@ -74,6 +76,10 @@ class Slider {
             customButtons: undefined
         }
         this.settings = settings;
+
+        // init slider
+        this.getElements(true);
+        this.init();
                 
         // set slider according to given settings
         this.setSlider();
@@ -98,7 +104,7 @@ class Slider {
         let totalWidth = this.dimensionOfParent.width * this.store.length;
         this.innerDiv.style.width = totalWidth + 'px';
         this.innerDiv.style.height = this.dimensionOfParent.height + 'px';
-
+        
         // add classes to divs and parent div
         this.elementHTML.classList.add('m-slider__wrapper', 'm-slider__init');
         this.store.forEach((child) => {
@@ -235,8 +241,8 @@ class Slider {
         nextButton.onclick = () => this.next();
         prevButton.onclick = () => this.prev();
 
-        nextButton.textContent = '>';
-        prevButton.textContent = '<';
+        //nextButton.textContent = '';
+        //prevButton.textContent = '';
 
         nextButton.classList.add('m-slider__button', 'm-slider__button-next');
         prevButton.classList.add('m-slider__button', 'm-slider__button-prev');
@@ -278,6 +284,7 @@ class Slider {
             let li = document.createElement('li');
             let btn = document.createElement('button');
             btn.type = 'button';
+            btn.title = div.element.dataset.btnTitle || '';
             btn.classList.add('m-slider__dots-btn');
             btn.onclick = () => this.handleDotClick(i);
 

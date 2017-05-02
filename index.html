@@ -10,15 +10,15 @@
 
     <div class="slider2">
         <div class="sliderr" id="header-slider">
-            <div>
+            <div data-btn-title="First slider">
                 <h2>First step</h2>
                 <pre>
                     <code>                    
                     </code>
                 </pre>
             </div>
-            <div><p>Second slide</p></div>
-            <div><p>Third slide</p></div>
+            <div data-btn-title="Second slider"><p>Second slide</p></div>
+            <div data-btn-title="Third slider"><p>Third slide</p></div>
         </div>
     </div>
 
@@ -38,6 +38,7 @@
         var a = new Slider("#slider", {
             defaultButtons: true,
             dots: true,
+            itemsPerSlide: 3,
             //floatingDots: false
             customButtons: {
                 prev: '<button type="button">Previous</button>',
@@ -47,7 +48,8 @@
 
         var b = new Slider("#header-slider", {
             defaultButtons: true,
-            dots: true
+            dots: true,
+            itemsPerSlide: 3
         });
     </script>
 </body>

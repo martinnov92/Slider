@@ -2,9 +2,11 @@ var gulp = require('gulp');
 var minify = require('gulp-minify');
 var sass = require('gulp-sass');
 
+/*
 gulp.task('default', function() {
   
 });
+*/
 
 gulp.task('compress', function() {
   gulp.src('./lib/index.js')
